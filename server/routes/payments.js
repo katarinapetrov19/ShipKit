@@ -1,5 +1,6 @@
 import express from 'express';
 import Stripe from 'stripe';
+import path from 'path';
 import db from '../db.js';
 import { requireAuth } from '../middleware/auth.js';
 import { sendEmail } from '../utils/email.js';
@@ -451,6 +452,110 @@ router.post('/webhook', express.raw({ type: 'application/json' }), async (req, r
   } catch (error) {
     console.error(`[Stripe Webhook Error] Event processing failed:`, error.message);
     return res.status(500).json({ error: 'Webhook processing crashed.' });
+  }
+});
+
+/**
+ * @route   POST /api/payments/verify-session
+ * @desc    Verify Stripe Checkout Session ID or dev-download-token for file access
+ * @access  Public
+ */
+router.post('/verify-session', async (req, res, next) => {
+  const { sessionId } = req.body;
+
+  if (!sessionId) {
+    return res.status(400).json({
+      status: 'error',
+      verified: false,
+      message: 'sessionId parameter is required.'
+    });
+  }
+
+  try {
+    if (!isStripeConfigured) {
+      if (sessionId === 'dev-download-token') {
+        return res.status(200).json({
+          status: 'success',
+          verified: true
+        });
+      } else {
+        return res.status(400).json({
+          status: 'error',
+          verified: false,
+          message: 'Invalid session ID or token. In simulation mode, use dev-download-token.'
+        });
+      }
+    }
+
+    // Stripe is configured - retrieve Checkout Session
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (session && session.payment_status === 'paid') {
+      return res.status(200).json({
+        status: 'success',
+        verified: true
+      });
+    } else {
+      return res.status(400).json({
+        status: 'error',
+        verified: false,
+        message: 'The payment for this checkout session has not been completed.'
+      });
+    }
+  } catch (error) {
+    console.error('[Verify Session Error]', error.message);
+    return res.status(400).json({
+      status: 'error',
+      verified: false,
+      message: 'Failed to verify checkout session: ' + error.message
+    });
+  }
+});
+
+/**
+ * @route   GET /api/payments/download-file
+ * @desc    Serve the shipkit-boilerplate.tar.gz file for verified buyers
+ * @access  Public
+ */
+router.get('/download-file', async (req, res) => {
+  const { token } = req.query;
+
+  if (!token) {
+    return res.status(400).send('Download token is required.');
+  }
+
+  try {
+    let isValid = false;
+
+    if (!isStripeConfigured) {
+      if (token === 'dev-download-token') {
+        isValid = true;
+      }
+    } else {
+      // Stripe is configured - retrieve and verify
+      try {
+        const session = await stripe.checkout.sessions.retrieve(token);
+        if (session && session.payment_status === 'paid') {
+          isValid = true;
+        }
+      } catch (err) {
+        console.error('[Download File Auth Error]', err.message);
+      }
+    }
+
+    if (!isValid) {
+      return res.status(403).send('Unauthorized. Invalid or expired download token.');
+    }
+
+    // Serve the tarball
+    const filePath = '/home/team/shared/shipkit/shipkit-boilerplate.tar.gz';
+    
+    res.setHeader('Content-Disposition', 'attachment; filename="shipkit-boilerplate.tar.gz"');
+    res.setHeader('Content-Type', 'application/gzip');
+    
+    return res.sendFile(filePath);
+  } catch (error) {
+    console.error('[Download File Error]', error.message);
+    return res.status(500).send('Internal Server Error serving download: ' + error.message);
   }
 });
 

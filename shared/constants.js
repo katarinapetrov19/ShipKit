@@ -49,3 +49,5 @@ export const APP_INFO = {
   url: 'https://shipkit.dev',
   supportEmail: 'support@shipkit.dev'
 };
+
+export const DOWNLOAD_URL = 'https://github.com/katarinapetrov19/ShipKit';
