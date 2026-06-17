@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { APP_INFO } from '@shared/constants';
+import Logo from '../components/Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
+
+const fieldClass = "block w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm text-[#0a0a0a] bg-white/60 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-colors";
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -11,16 +14,12 @@ export default function Login() {
   const { login, error, setError } = useAuth();
   const navigate = useNavigate();
 
-  // Clear global auth errors when mounting
-  useEffect(() => {
-    setError(null);
-  }, [setError]);
+  useEffect(() => { setError(null); }, [setError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError(null);
     setSubmitting(true);
-
     try {
       await login(email, password);
       navigate('/dashboard');
@@ -32,11 +31,8 @@ export default function Login() {
   };
 
   const handleQuickLogin = async (quickEmail) => {
-    setEmail(quickEmail);
-    setPassword('password123');
     setLocalError(null);
     setSubmitting(true);
-
     try {
       await login(quickEmail, 'password123');
       navigate('/dashboard');
@@ -47,134 +43,73 @@ export default function Login() {
     }
   };
 
-  const handleForgotPasswordClick = () => {
-    const userEmail = prompt('Enter your email address to receive a password reset link:');
+  const handleForgotPassword = () => {
+    const userEmail = prompt('Enter your email to receive a reset link:');
     if (userEmail) {
-      // Direct call to context API
       fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail })
       })
-      .then(res => res.json())
-      .then(data => alert(data.message || 'Password reset requested.'))
-      .catch(err => alert('Failed to request password reset: ' + err.message));
+      .then(r => r.json())
+      .then(d => alert(d.message || 'Reset link sent.'))
+      .catch(() => alert('Something went wrong.'));
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <Link to="/" className="text-3xl font-black text-brand-600">
-            ⚡ {APP_INFO.name}
-          </Link>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-slate-600">
-            Or{' '}
-            <Link to="/signup" className="font-semibold text-brand-600 hover:text-brand-500">
-              create a new account (14-day free trial)
-            </Link>
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#F2F1ED] flex flex-col items-center justify-center px-4 py-16 font-sans">
+      <Logo className="mb-10" />
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10 border border-slate-100">
-          
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-semibold tracking-tight text-center mb-1">Sign in</h1>
+        <p className="text-sm text-neutral-500 text-center mb-8">
+          No account?{' '}
+          <Link to="/signup" className="text-[#0a0a0a] underline underline-offset-2 hover:opacity-60 transition-opacity">
+            Create one free
+          </Link>
+        </p>
+
+        <div className="bg-white/60 border border-black/8 rounded-[20px] p-8">
           {(localError || error) && (
-            <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-sm text-red-700">
+            <div className="mb-6 p-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-600">
               {localError || error}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-slate-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="name@example.com"
-                />
-              </div>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Email</label>
+              <input type="email" required autoComplete="email" value={email} onChange={e => setEmail(e.target.value)} className={fieldClass} placeholder="name@example.com" />
             </div>
-
             <div>
-              <div className="flex items-center justify-between">
-                <label htmlFor="password" className="block text-sm font-medium leading-6 text-slate-900">
-                  Password
-                </label>
-                <div className="text-sm">
-                  <button type="button" className="font-semibold text-brand-600 hover:text-brand-500" onClick={handleForgotPasswordClick}>
-                    Forgot password?
-                  </button>
-                </div>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-medium text-neutral-500">Password</label>
+                <button type="button" onClick={handleForgotPassword} className="text-xs text-neutral-400 hover:text-black transition-colors">
+                  Forgot password?
+                </button>
               </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="••••••••"
-                />
-              </div>
+              <input type="password" required autoComplete="current-password" value={password} onChange={e => setPassword(e.target.value)} className={fieldClass} placeholder="••••••••" />
             </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex w-full justify-center rounded-xl bg-brand-600 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-colors disabled:bg-brand-400"
-              >
-                {submitting ? 'Signing in...' : 'Sign in'}
-              </button>
-            </div>
+            <button type="submit" disabled={submitting} className="w-full py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors disabled:opacity-50 mt-2">
+              {submitting ? 'Signing in…' : 'Sign in'}
+            </button>
           </form>
 
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200" />
-              </div>
-              <div className="relative flex justify-center text-xs font-medium leading-6">
-                <span className="bg-white px-6 text-slate-500">Quick Developer Logins</span>
-              </div>
-            </div>
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-black/8" /></div>
+            <div className="relative flex justify-center"><span className="bg-white/80 px-3 text-xs text-neutral-400">Developer quick login</span></div>
+          </div>
 
-            <div className="mt-6 grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('user@shipkit.dev')}
-                className="flex w-full flex-col items-center justify-center gap-0.5 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-100 transition-colors"
-              >
-                <span>Demo User</span>
-                <span className="text-[10px] text-slate-400 font-normal">user@shipkit.dev</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('admin@shipkit.dev')}
-                className="flex w-full flex-col items-center justify-center gap-0.5 rounded-xl bg-slate-50 px-3 py-2 text-xs font-semibold text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 hover:bg-slate-100 transition-colors"
-              >
-                <span>Demo Admin</span>
-                <span className="text-[10px] text-slate-400 font-normal">admin@shipkit.dev</span>
-              </button>
-            </div>
+          <div className="grid grid-cols-2 gap-3">
+            <button onClick={() => handleQuickLogin('user@shipkit.dev')} className="flex flex-col items-center py-2.5 px-3 rounded-xl border border-black/10 bg-[#F2F1ED] hover:bg-white transition-colors text-xs">
+              <span className="font-medium">Demo User</span>
+              <span className="text-neutral-400 text-[10px]">user@shipkit.dev</span>
+            </button>
+            <button onClick={() => handleQuickLogin('admin@shipkit.dev')} className="flex flex-col items-center py-2.5 px-3 rounded-xl border border-black/10 bg-[#F2F1ED] hover:bg-white transition-colors text-xs">
+              <span className="font-medium">Demo Admin</span>
+              <span className="text-neutral-400 text-[10px]">admin@shipkit.dev</span>
+            </button>
           </div>
         </div>
       </div>

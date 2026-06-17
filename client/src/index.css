@@ -1,28 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 selection:bg-brand-100 selection:text-brand-900;
+    @apply bg-[#F2F1ED] text-[#0a0a0a];
+    font-family: 'DM Sans', Arial, sans-serif;
+    selection-color: #0a0a0a;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
-/* Custom styles and smooth scroll transitions */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar for modern browsers */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply rounded bg-slate-200 hover:bg-slate-300;
+  border-radius: 4px;
+  background: #d4d2cc;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0ada6;
 }

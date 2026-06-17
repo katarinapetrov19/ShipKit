@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { APP_INFO } from '@shared/constants';
+import Logo from '../components/Logo.jsx';
 import { DownloadCloud, AlertTriangle, Loader2 } from 'lucide-react';
 
 export default function Download() {
@@ -54,7 +55,7 @@ export default function Download() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-12 px-6 shadow sm:rounded-2xl sm:px-10 border border-slate-100 text-center space-y-6">
           <div className="text-center">
-            <span className="text-3xl font-black text-brand-600">⚡ {APP_INFO.name}</span>
+            <Logo />
           </div>
 
           {status === 'verifying' && (

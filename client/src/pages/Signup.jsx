@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { APP_INFO } from '@shared/constants';
+import Logo from '../components/Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { CheckCircle } from 'lucide-react';
+
+const fieldClass = "block w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm text-[#0a0a0a] bg-white/60 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-colors";
 
 export default function Signup() {
   const [name, setName] = useState('');
@@ -13,16 +16,12 @@ export default function Signup() {
   const [success, setSuccess] = useState(false);
   const { signup, error, setError } = useAuth();
 
-  // Clear global auth errors when mounting
-  useEffect(() => {
-    setError(null);
-  }, [setError]);
+  useEffect(() => { setError(null); }, [setError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLocalError(null);
     setSubmitting(true);
-
     try {
       await signup(name, email, password);
       setSuccess(true);
@@ -35,143 +34,66 @@ export default function Signup() {
 
   if (success) {
     return (
-      <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white py-12 px-6 shadow sm:rounded-2xl sm:px-10 border border-slate-100 text-center space-y-6">
-            <div className="flex justify-center">
-              <CheckCircle className="h-16 w-16 text-emerald-500 animate-bounce" />
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900">Registration Successful!</h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
-              We have sent a verification link to <span className="font-semibold text-slate-800">{email}</span>. 
-              Please click the link in the email to verify your address and activate your account.
-            </p>
-            <div className="pt-4">
-              <Link
-                to="/login"
-                className="inline-flex justify-center rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-brand-700 transition-colors"
-              >
-                Go to Sign In
-              </Link>
-            </div>
-          </div>
+      <div className="min-h-screen bg-[#F2F1ED] flex flex-col items-center justify-center px-4 py-16 font-sans">
+        <div className="w-full max-w-sm bg-white/60 border border-black/8 rounded-[20px] p-10 text-center space-y-4">
+          <CheckCircle className="h-10 w-10 text-green-600 mx-auto" />
+          <h2 className="text-xl font-semibold tracking-tight">Check your inbox</h2>
+          <p className="text-sm text-neutral-500 leading-relaxed">
+            We sent a verification link to <span className="text-[#0a0a0a] font-medium">{email}</span>. Click it to activate your account.
+          </p>
+          <Link to="/login" className="inline-block mt-2 px-6 py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
+            Go to sign in
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          <Link to="/" className="text-3xl font-black text-brand-600">
-            ⚡ {APP_INFO.name}
-          </Link>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-slate-600">
-            Already have an account?{' '}
-            <Link to="/login" className="font-semibold text-brand-600 hover:text-brand-500">
-              Sign in here
-            </Link>
-          </p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-[#F2F1ED] flex flex-col items-center justify-center px-4 py-16 font-sans">
+      <Logo className="mb-10" />
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10 border border-slate-100">
-          
+      <div className="w-full max-w-sm">
+        <h1 className="text-2xl font-semibold tracking-tight text-center mb-1">Create your account</h1>
+        <p className="text-sm text-neutral-500 text-center mb-8">
+          Already have one?{' '}
+          <Link to="/login" className="text-[#0a0a0a] underline underline-offset-2 hover:opacity-60 transition-opacity">
+            Sign in
+          </Link>
+        </p>
+
+        <div className="bg-white/60 border border-black/8 rounded-[20px] p-8">
           {(localError || error) && (
-            <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-sm text-red-700">
+            <div className="mb-6 p-3 rounded-xl bg-red-50 border border-red-100 text-xs text-red-600">
               {localError || error}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-slate-900">
-                Full Name
-              </label>
-              <div className="mt-2">
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="John Doe"
-                />
-              </div>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Full name</label>
+              <input type="text" required value={name} onChange={e => setName(e.target.value)} className={fieldClass} placeholder="Maria Müller" />
             </div>
-
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-slate-900">
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="name@example.com"
-                />
-              </div>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Email</label>
+              <input type="email" required value={email} onChange={e => setEmail(e.target.value)} className={fieldClass} placeholder="name@example.com" />
             </div>
-
             <div>
-              <label htmlFor="password" className="block text-sm font-medium leading-6 text-slate-900">
-                Password
-              </label>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm sm:leading-6 px-3"
-                  placeholder="••••••••"
-                />
-              </div>
+              <label className="block text-xs font-medium text-neutral-500 mb-1.5">Password</label>
+              <input type="password" required value={password} onChange={e => setPassword(e.target.value)} className={fieldClass} placeholder="••••••••" />
             </div>
-
-            <div className="flex items-center">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                required
-                className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-600"
-              />
-              <label htmlFor="terms" className="ml-3 block text-sm leading-6 text-slate-900">
+            <div className="flex items-start gap-2.5 pt-1">
+              <input id="terms" type="checkbox" required className="mt-0.5 h-3.5 w-3.5 rounded border-black/20 accent-black" />
+              <label htmlFor="terms" className="text-xs text-neutral-500 leading-relaxed">
                 I agree to the{' '}
-                <a href="#" className="font-semibold text-brand-600 hover:text-brand-500">
-                  Terms of Service
-                </a>{' '}
-                and{' '}
-                <a href="#" className="font-semibold text-brand-600 hover:text-brand-500">
-                  Privacy Policy
-                </a>
+                <a href="#" className="text-[#0a0a0a] underline underline-offset-2">Terms of Service</a>
+                {' '}and{' '}
+                <a href="#" className="text-[#0a0a0a] underline underline-offset-2">Privacy Policy</a>
               </label>
             </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex w-full justify-center rounded-xl bg-brand-600 px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 transition-colors disabled:bg-brand-400"
-              >
-                {submitting ? 'Creating account...' : 'Create Account'}
-              </button>
-            </div>
+            <button type="submit" disabled={submitting} className="w-full py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors disabled:opacity-50 mt-2">
+              {submitting ? 'Creating account…' : 'Create account'}
+            </button>
           </form>
         </div>
       </div>

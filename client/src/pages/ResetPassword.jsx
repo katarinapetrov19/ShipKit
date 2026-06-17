@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { APP_INFO } from '@shared/constants';
+import Logo from '../components/Logo.jsx';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function ResetPassword() {
@@ -82,9 +83,7 @@ export default function ResetPassword() {
     <div className="flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <Link to="/" className="text-3xl font-black text-brand-600">
-            ⚡ {APP_INFO.name}
-          </Link>
+          <Logo />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-slate-900">
             Reset your password
           </h2>

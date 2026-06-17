@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { APP_INFO } from '@shared/constants';
+import Logo from '../components/Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import { 
   Users, DollarSign, Settings, TrendingUp, ShieldAlert, 
@@ -289,9 +290,10 @@ export default function Admin() {
       {/* Sidebar */}
       <aside className="hidden md:flex md:flex-shrink-0 flex-col w-64 bg-slate-900 text-slate-300">
         <div className="flex items-center h-16 px-6 border-b border-slate-800">
-          <Link to="/" className="text-xl font-black text-white flex items-center">
-            ⚡ {systemSettings.app_name} <span className="ml-2 text-[10px] font-semibold bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">ADMIN</span>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Logo className="text-white [&_svg]:fill-white [&_svg]:stroke-white" />
+            <span className="text-[10px] font-semibold bg-white/10 text-white/60 px-2 py-0.5 rounded border border-white/20">ADMIN</span>
+          </div>
         </div>
         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
           <nav className="flex-1 px-4 space-y-1">
