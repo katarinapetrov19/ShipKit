@@ -2,5 +2,8 @@
   "buildCommand": "npm run build --prefix client",
   "outputDirectory": "client/dist",
   "installCommand": "npm run install:all",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://independent-nature-production-639b.up.railway.app/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
