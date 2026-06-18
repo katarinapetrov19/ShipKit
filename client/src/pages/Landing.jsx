@@ -62,10 +62,10 @@ export default function Landing() {
             <a href="#faq" className="hover:text-black transition-colors">FAQ</a>
           </nav>
           <div className="flex items-center justify-end gap-3">
-            <Link to="/login" className="px-5 py-2 text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
+            <Link to="/login" className="hidden sm:block px-5 py-2 text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
               Sign in
             </Link>
-            <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="px-5 py-2 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
+            <a href="#pricing" className="hidden sm:block px-5 py-2 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
               Buy now
             </a>
           </div>
