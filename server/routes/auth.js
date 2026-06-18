@@ -48,32 +48,52 @@ router.post('/signup', async (req, res, next) => {
       VALUES (?, ?, ?, ?, ?, ?)
     `).run(userId, name, email.toLowerCase(), hashedPassword, verificationToken, createdAt);
 
-    // Send verification email (SMTP or development fallback log)
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-    const verificationLink = `${clientUrl}/verify-email?token=${verificationToken}`;
-    
-    const emailResult = await sendEmail({
-      to: email,
-      subject: 'Verify Your Email - ShipKit ⚡',
-      text: `Welcome to ShipKit! Please verify your email by clicking the following link: ${verificationLink}`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #f1f5f9; rounded: 12px;">
-          <h2 style="color: #8b5cf6;">Welcome to ShipKit! ⚡</h2>
-          <p>Hi ${name},</p>
-          <p>Thank you for signing up for ShipKit! Please click the button below to verify your email address and activate your account:</p>
-          <div style="margin: 24px 0;">
-            <a href="${verificationLink}" style="background-color: #8b5cf6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Verify Email Address</a>
-          </div>
-          <p style="font-size: 12px; color: #64748b;">If the button above does not work, copy and paste this link into your browser: <br>${verificationLink}</p>
-        </div>
-      `
-    });
+    // Check if SMTP is actually configured for real emails
+    const smtpConfigured = process.env.SMTP_HOST && 
+      !process.env.SMTP_HOST.includes('mailtrap.io') && 
+      process.env.SMTP_USER !== 'your_smtp_username';
 
-    return res.status(201).json({
-      status: 'success',
-      message: 'Registration successful! Please check your email to verify your account.',
-      verificationLink: emailResult?.simulated ? verificationLink : undefined
-    });
+    if (smtpConfigured) {
+      // Send real verification email
+      const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+      const verificationLink = `${clientUrl}/verify-email?token=${verificationToken}`;
+      
+      await sendEmail({
+        to: email,
+        subject: 'Verify Your Email - ShipKit ⚡',
+        text: `Welcome to ShipKit! Please verify your email by clicking the following link: ${verificationLink}`,
+        html: `...`
+      });
+
+      return res.status(201).json({
+        status: 'success',
+        message: 'Registration successful! Please check your email to verify your account.'
+      });
+    } else {
+      // Dev mode — auto-verify the user so no email is needed
+      db.prepare('UPDATE users SET is_verified = 1, verification_token = NULL WHERE id = ?').run(userId);
+      
+      // Auto-login: generate JWT and set cookie
+      const jwtSecret = process.env.JWT_SECRET || 'super_secret_change_me_in_production_123456';
+      const jwtExpiry = process.env.JWT_EXPIRES_IN || '7d';
+      const token = jwt.sign({ id: userId, email: email.toLowerCase() }, jwtSecret, { expiresIn: jwtExpiry });
+      
+      res.cookie('token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+
+      const user = db.prepare('SELECT id, name, email, role, is_verified, created_at FROM users WHERE id = ?').get(userId);
+
+      return res.status(201).json({
+        status: 'success',
+        message: 'Registration successful! Welcome to ShipKit.',
+        user,
+        autoLoggedIn: true
+      });
+    }
   } catch (error) {
     next(error);
   }

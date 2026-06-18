@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { APP_INFO } from '@shared/constants';
 import Logo from '../components/Logo.jsx';
 import { useAuth } from '../context/AuthContext.jsx';
@@ -8,14 +8,14 @@ import { CheckCircle } from 'lucide-react';
 const fieldClass = "block w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm text-[#0a0a0a] bg-white/60 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-colors";
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [localError, setLocalError] = useState(null);
   const [success, setSuccess] = useState(false);
-  const [verifyLink, setVerifyLink] = useState(null);
-  const { signup, error, setError } = useAuth();
+  const { signup, setUser, error, setError } = useAuth();
 
   useEffect(() => { setError(null); }, [setError]);
 
@@ -25,10 +25,12 @@ export default function Signup() {
     setSubmitting(true);
     try {
       const data = await signup(name, email, password);
-      if (data.verificationLink) {
-        setVerifyLink(data.verificationLink);
+      if (data.autoLoggedIn && data.user) {
+        setUser(data.user);
+        navigate('/dashboard');
+      } else {
+        setSuccess(true);
       }
-      setSuccess(true);
     } catch (err) {
       setLocalError(err.message);
     } finally {
@@ -45,13 +47,6 @@ export default function Signup() {
           <p className="text-sm text-neutral-500 leading-relaxed">
             We sent a verification link to <span className="text-[#0a0a0a] font-medium">{email}</span>. Click it to activate your account.
           </p>
-          {verifyLink && (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-left space-y-2">
-              <p className="text-xs font-medium text-amber-800">⚠️ Dev mode — no real email sent</p>
-              <p className="text-xs text-amber-700">Click the link below to verify:</p>
-              <a href={verifyLink} className="text-xs text-blue-600 underline break-all font-medium hover:text-blue-700">{verifyLink}</a>
-            </div>
-          )}
           <Link to="/login" className="inline-block mt-2 px-6 py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
             Go to sign in
           </Link>
