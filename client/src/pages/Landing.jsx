@@ -195,7 +195,7 @@ export default function Landing() {
                 <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
                   Buy now
                 </a>
-                <Link to="/login" className="block w-full py-3 text-center text-sm font-medium text-neutral-400 hover:text-black transition-colors text-center">
+                <Link to="/login" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
                   Try demo first
                 </Link>
               </div>
