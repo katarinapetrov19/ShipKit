@@ -285,259 +285,170 @@ export default function Admin() {
     return 'Starter Monthly';
   };
 
+  const fieldClass = "block w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm text-[#0a0a0a] bg-[#F2F1ED] placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black/20 transition-colors";
+  const selectClass = "block w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm text-[#0a0a0a] bg-[#F2F1ED] focus:outline-none focus:ring-2 focus:ring-black/20 transition-colors";
+
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
+    <div className="flex h-screen bg-[#F2F1ED] overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className="hidden md:flex md:flex-shrink-0 flex-col w-64 bg-slate-900 text-slate-300">
-        <div className="flex items-center h-16 px-6 border-b border-slate-800">
+      <aside className="hidden md:flex flex-col w-56 bg-[#0a0a0a] shrink-0">
+        <div className="h-14 flex items-center px-5 border-b border-white/10">
           <div className="flex items-center gap-2">
             <Logo className="text-white [&_svg]:fill-white [&_svg]:stroke-white" />
-            <span className="text-[10px] font-semibold bg-white/10 text-white/60 px-2 py-0.5 rounded border border-white/20">ADMIN</span>
+            <span className="text-[10px] font-medium bg-white/10 text-white/50 px-2 py-0.5 rounded border border-white/10">ADMIN</span>
           </div>
         </div>
-        <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-          <nav className="flex-1 px-4 space-y-1">
-            <button
-              onClick={() => setActiveSubTab('analytics')}
-              className={`group flex items-center px-4 py-3 text-sm font-semibold rounded-xl w-full transition-colors ${
-                activeSubTab === 'analytics'
-                  ? 'bg-slate-800 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+        <nav className="flex-1 p-3 space-y-1">
+          {[
+            { tab: 'analytics', icon: <BarChart3 className="h-4 w-4 shrink-0" />, label: 'Metrics' },
+            { tab: 'directory', icon: <Users className="h-4 w-4 shrink-0" />, label: 'Users' },
+            { tab: 'settings', icon: <Settings className="h-4 w-4 shrink-0" />, label: 'Settings' },
+          ].map(({ tab, icon, label }) => (
+            <button key={tab} onClick={() => setActiveSubTab(tab)}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl w-full text-sm transition-colors ${
+                activeSubTab === tab ? 'bg-white/10 text-white font-medium' : 'text-white/40 hover:text-white hover:bg-white/5'
               }`}
             >
-              <BarChart3 className="mr-3 h-5 w-5" />
-              Metrics & Graphs
+              {icon} {label}
             </button>
-            <button
-              onClick={() => setActiveSubTab('directory')}
-              className={`group flex items-center px-4 py-3 text-sm font-semibold rounded-xl w-full transition-colors ${
-                activeSubTab === 'directory'
-                  ? 'bg-slate-800 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-              }`}
-            >
-              <Users className="mr-3 h-5 w-5" />
-              User Directory
-            </button>
-            <button
-              onClick={() => setActiveSubTab('settings')}
-              className={`group flex items-center px-4 py-3 text-sm font-semibold rounded-xl w-full transition-colors ${
-                activeSubTab === 'settings'
-                  ? 'bg-slate-800 text-white'
-                  : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-              }`}
-            >
-              <Settings className="mr-3 h-5 w-5" />
-              System Settings
-            </button>
-
-            <Link to="/dashboard" className="group flex items-center px-4 py-3 text-sm font-semibold rounded-xl text-slate-400 hover:bg-slate-800 hover:text-white transition-colors border-t border-slate-800/80 pt-4 mt-4">
-              <Activity className="mr-3 h-5 w-5" />
-              Back to User App
-            </Link>
-          </nav>
-        </div>
+          ))}
+          <Link to="/dashboard" className="flex items-center gap-3 px-4 py-2.5 rounded-xl w-full text-sm text-white/40 hover:text-white hover:bg-white/5 transition-colors mt-2 border-t border-white/10 pt-4">
+            <Activity className="h-4 w-4 shrink-0" /> Back to app
+          </Link>
+        </nav>
       </aside>
 
-      {/* Main Administrative Container */}
+      {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Top Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-lg font-bold text-slate-800 capitalize">Admin {activeSubTab} Workspace</h1>
-          </div>
-          <div className="flex items-center space-x-3">
-            <span className="text-xs font-semibold bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-full border border-emerald-100 flex items-center gap-1.5 animate-pulse">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-              Live Sync
+        {/* Header */}
+        <header className="h-14 bg-[#F2F1ED] border-b border-black/8 flex items-center justify-between px-6 shrink-0">
+          <h1 className="text-sm font-medium text-[#0a0a0a] capitalize">Admin · {activeSubTab}</h1>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-neutral-400 flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" /> Live
             </span>
-            <div className="h-8 w-8 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-sm">
-              A
-            </div>
+            <div className="h-7 w-7 rounded-full bg-[#0a0a0a] text-white flex items-center justify-center text-xs font-medium">A</div>
           </div>
         </header>
 
-        {/* Dynamic Inner Body */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
-          <div className="max-w-6xl mx-auto space-y-6">
-            
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="max-w-6xl mx-auto space-y-5">
+
             {successMsg && (
-              <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-start gap-3 shadow-sm animate-in fade-in slide-in-from-top-4 duration-200">
-                <Check className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                <p className="text-sm text-emerald-700 font-semibold leading-relaxed">{successMsg}</p>
+              <div className="p-4 bg-white/60 border border-black/8 rounded-[20px] flex items-center gap-3">
+                <Check className="h-4 w-4 text-green-600 shrink-0" />
+                <p className="text-sm text-[#0a0a0a]">{successMsg}</p>
               </div>
             )}
 
-            {/* TAB 1: ANALYTICS & CHARTS */}
+            {/* TAB 1: ANALYTICS */}
             {activeSubTab === 'analytics' && (
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {analyticsLoading ? (
-                  <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-200/60 shadow-sm rounded-2xl">
-                    <Loader2 className="h-10 w-10 text-brand-600 animate-spin" />
-                    <p className="text-sm font-semibold text-slate-500 mt-4">Calculating database metrics & statistics...</p>
+                  <div className="flex flex-col items-center justify-center py-20 bg-white/60 border border-black/8 rounded-[20px]">
+                    <Loader2 className="h-8 w-8 text-[#0a0a0a] animate-spin" />
+                    <p className="text-sm text-neutral-400 mt-4">Loading metrics…</p>
                   </div>
                 ) : analyticsError ? (
-                  <div className="p-6 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3">
-                    <AlertCircle className="h-6 w-6 text-red-500 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <h3 className="text-sm font-bold text-red-900">Failed to load statistics</h3>
-                      <p className="text-xs text-red-700 mt-1">{analyticsError}</p>
-                    </div>
+                  <div className="p-5 bg-red-50 border border-red-100 rounded-[20px] flex items-start gap-3">
+                    <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
+                    <p className="text-sm text-red-600">{analyticsError}</p>
                   </div>
                 ) : (
                   <>
-                    {/* Performance Metrics Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
-                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Registered</span>
-                        <div className="flex items-baseline justify-between mt-2">
-                          <h3 className="text-3xl font-black text-slate-900">{analytics.metrics.totalUsers}</h3>
-                          <Users className="h-6 w-6 text-slate-400" />
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                      {[
+                        { label: 'Total Registered', value: analytics.metrics.totalUsers, sub: `Verified: ${analytics.metrics.verifiedUsers}`, icon: <Users className="h-5 w-5 text-neutral-400" /> },
+                        { label: 'MRR', value: `$${analytics.metrics.mrr}`, sub: 'Monthly recurring', icon: <DollarSign className="h-5 w-5 text-neutral-400" /> },
+                        { label: 'Active Subscriptions', value: analytics.metrics.premiumUsers, sub: 'Active Stripe plans', icon: <TrendingUp className="h-5 w-5 text-neutral-400" /> },
+                        { label: 'Est. Product Value', value: `$${analytics.metrics.estimatedRevenue}`, sub: 'Lifetime billing', icon: <Cpu className="h-5 w-5 text-neutral-400" /> },
+                      ].map((card, i) => (
+                        <div key={i} className="bg-white/60 border border-black/8 rounded-[20px] p-5 flex flex-col justify-between">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-neutral-400 uppercase tracking-widest">{card.label}</span>
+                            {card.icon}
+                          </div>
+                          <p className="text-3xl font-semibold tracking-tight text-[#0a0a0a] mt-2">{card.value}</p>
+                          <p className="text-xs text-neutral-400 mt-1">{card.sub}</p>
                         </div>
-                        <p className="text-xs text-slate-500 mt-2">Verified emails: <b>{analytics.metrics.verifiedUsers}</b></p>
-                      </div>
-
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
-                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Monthly Recurring Revenue</span>
-                        <div className="flex items-baseline justify-between mt-2">
-                          <h3 className="text-3xl font-black text-slate-900">${analytics.metrics.mrr}</h3>
-                          <DollarSign className="h-6 w-6 text-emerald-500" />
-                        </div>
-                        <p className="text-xs text-slate-500 mt-2">Pro premium conversions</p>
-                      </div>
-
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
-                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Subscribed (Active)</span>
-                        <div className="flex items-baseline justify-between mt-2">
-                          <h3 className="text-3xl font-black text-slate-900">{analytics.metrics.premiumUsers}</h3>
-                          <TrendingUp className="h-6 w-6 text-indigo-500" />
-                        </div>
-                        <p className="text-xs text-slate-500 mt-2">Active Stripe billing plans</p>
-                      </div>
-
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
-                        <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Est. Product Value</span>
-                        <div className="flex items-baseline justify-between mt-2">
-                          <h3 className="text-3xl font-black text-slate-900">${analytics.metrics.estimatedRevenue}</h3>
-                          <Cpu className="h-6 w-6 text-rose-500" />
-                        </div>
-                        <p className="text-xs text-slate-500 mt-2">Lifetime billing value</p>
-                      </div>
+                      ))}
                     </div>
 
-                    {/* Chart & Subscription distribution */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                      {/* Live Signups Graph */}
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm lg:col-span-2 space-y-4">
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                          <h3 className="font-bold text-slate-800">Daily Signups (Last 7 Days)</h3>
-                          <span className="text-xs font-semibold bg-brand-50 text-brand-700 px-2 py-1 rounded">SQLite strftime API</span>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                      <div className="bg-white/60 border border-black/8 rounded-[20px] p-6 lg:col-span-2 space-y-4">
+                        <div className="flex items-center justify-between border-b border-black/8 pb-4">
+                          <p className="text-sm font-medium">Daily Signups (Last 7 Days)</p>
+                          <span className="text-xs text-neutral-400 bg-black/5 px-2 py-1 rounded-lg">SQLite strftime</span>
                         </div>
-                        <div className="h-64 w-full">
+                        <div className="h-56 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={analytics.dailySignups}>
                               <defs>
                                 <linearGradient id="signupGradient" x1="0" y1="0" x2="0" y2="1">
-                                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.2}/>
-                                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                                  <stop offset="5%" stopColor="#0a0a0a" stopOpacity={0.15}/>
+                                  <stop offset="95%" stopColor="#0a0a0a" stopOpacity={0}/>
                                 </linearGradient>
                               </defs>
-                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                              <XAxis dataKey="date" tickLine={false} axisLine={false} stroke="#94a3b8" fontSize={11} />
-                              <YAxis tickLine={false} axisLine={false} stroke="#94a3b8" fontSize={11} allowDecimals={false} />
-                              <Tooltip contentStyle={{ background: '#fff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }} />
-                              <Area type="monotone" dataKey="count" name="New Signups" stroke="#2563eb" strokeWidth={2.5} fillOpacity={1} fill="url(#signupGradient)" />
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.06)" />
+                              <XAxis dataKey="date" tickLine={false} axisLine={false} stroke="#a3a3a3" fontSize={11} />
+                              <YAxis tickLine={false} axisLine={false} stroke="#a3a3a3" fontSize={11} allowDecimals={false} />
+                              <Tooltip contentStyle={{ background: '#fff', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.08)', boxShadow: '0 2px 8px rgba(0,0,0,0.05)' }} />
+                              <Area type="monotone" dataKey="count" name="Signups" stroke="#0a0a0a" strokeWidth={2} fillOpacity={1} fill="url(#signupGradient)" />
                             </AreaChart>
                           </ResponsiveContainer>
                         </div>
                       </div>
 
-                      {/* Distribution breakdown card */}
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-6">
-                        <div className="border-b border-slate-100 pb-4">
-                          <h3 className="font-bold text-slate-800">Subscription Breakdown</h3>
-                          <p className="text-xs text-slate-500 mt-0.5">Tier distribution in the database</p>
+                      <div className="bg-white/60 border border-black/8 rounded-[20px] p-6 space-y-5">
+                        <div className="border-b border-black/8 pb-4">
+                          <p className="text-sm font-medium">Subscription Breakdown</p>
+                          <p className="text-xs text-neutral-400 mt-0.5">Tier distribution</p>
                         </div>
-                        
-                        <div className="space-y-4">
-                          <div>
-                            <div className="flex items-center justify-between text-xs font-semibold text-slate-600 mb-1">
-                              <span>Free Trial</span>
-                              <span>{analytics.subscriptionBreakdown.free} users</span>
+                        {[
+                          { label: 'Free Trial', count: analytics.subscriptionBreakdown.free },
+                          { label: 'Starter Monthly', count: analytics.subscriptionBreakdown.monthly },
+                          { label: 'Pro Yearly', count: analytics.subscriptionBreakdown.yearly },
+                        ].map((tier) => (
+                          <div key={tier.label}>
+                            <div className="flex items-center justify-between text-xs text-neutral-500 mb-1.5">
+                              <span>{tier.label}</span><span>{tier.count}</span>
                             </div>
-                            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                              <div className="bg-slate-400 h-2.5 rounded-full" style={{ width: `${(analytics.subscriptionBreakdown.free / Math.max(analytics.metrics.totalUsers, 1)) * 100}%` }}></div>
+                            <div className="w-full bg-black/8 h-2 rounded-full overflow-hidden">
+                              <div className="bg-[#0a0a0a] h-2 rounded-full transition-all" style={{ width: `${(tier.count / Math.max(analytics.metrics.totalUsers, 1)) * 100}%` }} />
                             </div>
                           </div>
-
-                          <div>
-                            <div className="flex items-center justify-between text-xs font-semibold text-brand-600 mb-1">
-                              <span>Starter Monthly</span>
-                              <span>{analytics.subscriptionBreakdown.monthly} subscribers</span>
-                            </div>
-                            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                              <div className="bg-brand-500 h-2.5 rounded-full" style={{ width: `${(analytics.subscriptionBreakdown.monthly / Math.max(analytics.metrics.totalUsers, 1)) * 100}%` }}></div>
-                            </div>
-                          </div>
-
-                          <div>
-                            <div className="flex items-center justify-between text-xs font-semibold text-indigo-600 mb-1">
-                              <span>Pro Yearly</span>
-                              <span>{analytics.subscriptionBreakdown.yearly} subscribers</span>
-                            </div>
-                            <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
-                              <div className="bg-indigo-600 h-2.5 rounded-full" style={{ width: `${(analytics.subscriptionBreakdown.yearly / Math.max(analytics.metrics.totalUsers, 1)) * 100}%` }}></div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="p-4 bg-slate-50 border border-slate-100 rounded-xl text-xs text-slate-500 leading-relaxed">
-                          Subscribed metrics count accounts possessing active <b>Stripe webhooks status updates</b> mapped locally in SQLite.
-                        </div>
+                        ))}
+                        <p className="text-xs text-neutral-400 leading-relaxed pt-2 border-t border-black/8">
+                          Counts accounts with active Stripe webhook status in SQLite.
+                        </p>
                       </div>
                     </div>
 
-                    {/* Recent Transactions list */}
-                    <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
-                      <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                        <h3 className="font-bold text-slate-800">Recent Customer Subscriptions</h3>
-                        <span className="text-xs text-slate-500">Last 5 active purchases</span>
+                    <div className="bg-white/60 border border-black/8 rounded-[20px] p-6 space-y-4">
+                      <div className="flex items-center justify-between border-b border-black/8 pb-4">
+                        <p className="text-sm font-medium">Recent Subscriptions</p>
+                        <span className="text-xs text-neutral-400">Last 5</span>
                       </div>
-                      
                       <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-slate-100">
+                        <table className="min-w-full">
                           <thead>
-                            <tr className="text-left text-xs font-semibold text-slate-400 uppercase">
-                              <th className="py-3 px-4">Customer</th>
-                              <th className="py-3 px-4">Email</th>
-                              <th className="py-3 px-4">Plan</th>
-                              <th className="py-3 px-4">Amount</th>
-                              <th className="py-3 px-4 text-center">Status</th>
-                              <th className="py-3 px-4 text-right">Date</th>
+                            <tr className="text-left text-xs text-neutral-400 uppercase tracking-widest">
+                              <th className="py-2.5 px-4">Customer</th><th className="py-2.5 px-4">Plan</th>
+                              <th className="py-2.5 px-4">Amount</th><th className="py-2.5 px-4 text-center">Status</th>
+                              <th className="py-2.5 px-4 text-right">Date</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-slate-100 text-sm text-slate-600">
-                            {analytics.recentTransactions.length > 0 ? (
-                              analytics.recentTransactions.map((tx, idx) => (
-                                <tr key={idx} className="hover:bg-slate-50/50">
-                                  <td className="py-3 px-4 font-bold text-slate-800">{tx.name}</td>
-                                  <td className="py-3 px-4">{tx.email}</td>
-                                  <td className="py-3 px-4">{tx.plan}</td>
-                                  <td className="py-3 px-4 font-semibold text-slate-900">${tx.amount}</td>
-                                  <td className="py-3 px-4 text-center">
-                                    <span className="inline-flex rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-100 capitalize">
-                                      {tx.status}
-                                    </span>
-                                  </td>
-                                  <td className="py-3 px-4 text-right text-slate-400 text-xs">{tx.date}</td>
-                                </tr>
-                              ))
-                            ) : (
-                              <tr>
-                                <td colSpan="6" className="py-6 text-center text-slate-400 text-sm">
-                                  No transaction logs found in DB yet. Simulate updates in your dashboard!
-                                </td>
+                          <tbody className="divide-y divide-black/5 text-sm">
+                            {analytics.recentTransactions.length > 0 ? analytics.recentTransactions.map((tx, i) => (
+                              <tr key={i} className="hover:bg-black/3">
+                                <td className="py-3 px-4"><div className="font-medium text-[#0a0a0a]">{tx.name}</div><div className="text-xs text-neutral-400">{tx.email}</div></td>
+                                <td className="py-3 px-4 text-neutral-500">{tx.plan}</td>
+                                <td className="py-3 px-4 font-medium">${tx.amount}</td>
+                                <td className="py-3 px-4 text-center"><span className="px-2 py-0.5 rounded-full text-xs bg-green-50 text-green-700 border border-green-100 capitalize">{tx.status}</span></td>
+                                <td className="py-3 px-4 text-right text-xs text-neutral-400">{tx.date}</td>
                               </tr>
+                            )) : (
+                              <tr><td colSpan="5" className="py-8 text-center text-neutral-400 text-sm">No transactions yet.</td></tr>
                             )}
                           </tbody>
                         </table>
@@ -550,127 +461,63 @@ export default function Admin() {
 
             {/* TAB 2: DIRECTORY */}
             {activeSubTab === 'directory' && (
-              <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
-                {/* Search & Filter bar */}
-                <div className="p-5 border-b border-slate-100 bg-slate-50/50 flex flex-col md:flex-row gap-4 items-center justify-between">
-                  <div className="relative w-full md:w-80">
-                    <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-400" />
-                    <input
-                      type="text"
-                      placeholder="Search users by name or email..."
-                      value={search}
+              <div className="bg-white/60 border border-black/8 rounded-[20px] overflow-hidden">
+                <div className="p-5 border-b border-black/8 flex flex-col md:flex-row gap-4 items-center justify-between">
+                  <div className="relative w-full md:w-72">
+                    <Search className="absolute left-4 top-2.5 h-4 w-4 text-neutral-400" />
+                    <input type="text" placeholder="Search by name or email…" value={search}
                       onChange={(e) => { setSearch(e.target.value); setOffset(0); }}
-                      className="pl-10 block w-full rounded-xl border-0 py-2 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none"
+                      className="pl-10 w-full rounded-2xl border border-black/10 py-2.5 px-4 text-sm bg-[#F2F1ED] placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-black/20"
                     />
                   </div>
-                  
-                  <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
-                    <div className="flex items-center space-x-2">
-                      <Filter className="h-4 w-4 text-slate-400" />
-                      <span className="text-xs font-bold text-slate-500 uppercase">Filters:</span>
-                    </div>
-
-                    <select
-                      value={roleFilter}
-                      onChange={(e) => { setRoleFilter(e.target.value); setOffset(0); }}
-                      className="rounded-xl border-0 py-1.5 px-3 text-slate-800 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600 text-xs font-semibold focus:outline-none bg-white"
-                    >
-                      <option value="">All Roles</option>
-                      <option value="user">User</option>
-                      <option value="admin">Administrator</option>
+                  <div className="flex items-center gap-3">
+                    <Filter className="h-4 w-4 text-neutral-400" />
+                    <select value={roleFilter} onChange={(e) => { setRoleFilter(e.target.value); setOffset(0); }} className={selectClass + " w-auto"}>
+                      <option value="">All roles</option><option value="user">User</option><option value="admin">Admin</option>
                     </select>
-
-                    <select
-                      value={verifiedFilter}
-                      onChange={(e) => { setVerifiedFilter(e.target.value); setOffset(0); }}
-                      className="rounded-xl border-0 py-1.5 px-3 text-slate-800 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600 text-xs font-semibold focus:outline-none bg-white"
-                    >
-                      <option value="">All Verifications</option>
-                      <option value="1">Verified Email</option>
-                      <option value="0">Unverified Email</option>
+                    <select value={verifiedFilter} onChange={(e) => { setVerifiedFilter(e.target.value); setOffset(0); }} className={selectClass + " w-auto"}>
+                      <option value="">All</option><option value="1">Verified</option><option value="0">Unverified</option>
                     </select>
                   </div>
                 </div>
 
-                {/* Table View */}
                 {loading ? (
-                  <div className="flex flex-col items-center justify-center py-20">
-                    <Loader2 className="h-8 w-8 text-brand-600 animate-spin" />
-                    <p className="text-xs font-semibold text-slate-400 mt-3">Loading users database...</p>
-                  </div>
+                  <div className="flex flex-col items-center py-16"><Loader2 className="h-7 w-7 text-[#0a0a0a] animate-spin" /><p className="text-xs text-neutral-400 mt-3">Loading…</p></div>
                 ) : error ? (
-                  <div className="p-6 text-center text-sm text-red-600 font-bold">{error}</div>
+                  <div className="p-6 text-center text-sm text-red-500">{error}</div>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-100">
+                    <table className="min-w-full">
                       <thead>
-                        <tr className="bg-slate-50/50 text-left text-xs font-bold text-slate-400 uppercase border-b border-slate-100">
-                          <th className="py-3.5 px-5">User</th>
-                          <th className="py-3.5 px-5">Role</th>
-                          <th className="py-3.5 px-5">Email Status</th>
-                          <th className="py-3.5 px-5">Active Subscription</th>
-                          <th className="py-3.5 px-5">Customer ID</th>
-                          <th className="py-3.5 px-5 text-right">Actions</th>
+                        <tr className="text-left text-xs text-neutral-400 uppercase tracking-widest border-b border-black/8">
+                          <th className="py-3 px-5">User</th><th className="py-3 px-5">Role</th>
+                          <th className="py-3 px-5">Email</th><th className="py-3 px-5">Plan</th>
+                          <th className="py-3 px-5">Customer ID</th><th className="py-3 px-5 text-right">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100 text-sm text-slate-600">
-                        {users.length > 0 ? (
-                          users.map((item) => (
-                            <tr key={item.id} className="hover:bg-slate-50/30">
-                              <td className="py-4 px-5">
-                                <div className="font-bold text-slate-800">{item.name || 'Anonymous User'}</div>
-                                <div className="text-xs text-slate-400">{item.email}</div>
-                              </td>
-                              <td className="py-4 px-5">
-                                <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold border ${
-                                  item.role === 'admin' 
-                                    ? 'bg-rose-50 text-rose-700 border-rose-100' 
-                                    : 'bg-blue-50 text-blue-700 border-blue-100'
-                                }`}>
-                                  {item.role === 'admin' ? 'Administrator' : 'User'}
-                                </span>
-                              </td>
-                              <td className="py-4 px-5">
-                                {item.is_verified ? (
-                                  <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-semibold">
-                                    <Check className="h-4 w-4" /> Verified
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1 text-slate-400 text-xs font-medium">
-                                    <X className="h-4 w-4" /> Unverified
-                                  </span>
-                                )}
-                              </td>
-                              <td className="py-4 px-5 font-bold text-slate-700">
-                                {getPlanName(item.stripe_price_id)}
-                              </td>
-                              <td className="py-4 px-5 text-slate-400 text-xs font-mono">
-                                {item.stripe_customer_id || '—'}
-                              </td>
-                              <td className="py-4 px-5 text-right space-x-2">
-                                <button
-                                  onClick={() => handleEditOpen(item)}
-                                  className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors"
-                                  title="Edit User Role/Email"
-                                >
-                                  <Edit2 className="h-4 w-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteUser(item)}
-                                  className="p-1.5 rounded-lg text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
-                                  title="Delete Account"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </button>
-                              </td>
-                            </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="6" className="py-12 text-center text-slate-400 text-sm">
-                              No matching accounts found.
+                      <tbody className="divide-y divide-black/5 text-sm">
+                        {users.length > 0 ? users.map((item) => (
+                          <tr key={item.id} className="hover:bg-black/3">
+                            <td className="py-3.5 px-5"><div className="font-medium text-[#0a0a0a]">{item.name || 'Anonymous'}</div><div className="text-xs text-neutral-400">{item.email}</div></td>
+                            <td className="py-3.5 px-5">
+                              <span className={`px-2 py-0.5 rounded-full text-xs border ${item.role === 'admin' ? 'bg-[#0a0a0a] text-white border-transparent' : 'bg-black/5 text-neutral-600 border-black/8'}`}>
+                                {item.role === 'admin' ? 'Admin' : 'User'}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-5">
+                              {item.is_verified
+                                ? <span className="flex items-center gap-1 text-green-600 text-xs"><Check className="h-3.5 w-3.5" /> Verified</span>
+                                : <span className="flex items-center gap-1 text-neutral-400 text-xs"><X className="h-3.5 w-3.5" /> Unverified</span>}
+                            </td>
+                            <td className="py-3.5 px-5 text-neutral-500">{getPlanName(item.stripe_price_id)}</td>
+                            <td className="py-3.5 px-5 text-neutral-400 text-xs font-mono">{item.stripe_customer_id || '—'}</td>
+                            <td className="py-3.5 px-5 text-right space-x-1">
+                              <button onClick={() => handleEditOpen(item)} className="p-1.5 rounded-lg text-neutral-400 hover:bg-black/5 hover:text-[#0a0a0a] transition-colors"><Edit2 className="h-4 w-4" /></button>
+                              <button onClick={() => handleDeleteUser(item)} className="p-1.5 rounded-lg text-neutral-400 hover:bg-red-50 hover:text-red-500 transition-colors"><Trash2 className="h-4 w-4" /></button>
                             </td>
                           </tr>
+                        )) : (
+                          <tr><td colSpan="6" className="py-12 text-center text-neutral-400 text-sm">No users found.</td></tr>
                         )}
                       </tbody>
                     </table>
@@ -679,209 +526,117 @@ export default function Admin() {
               </div>
             )}
 
-            {/* TAB 3: SYSTEM CONFIG SETTINGS */}
+            {/* TAB 3: SETTINGS */}
             {activeSubTab === 'settings' && (
-              <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden space-y-6 p-6">
+              <div className="bg-white/60 border border-black/8 rounded-[20px] p-6 space-y-6">
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900">Global System Settings</h3>
-                  <p className="text-xs text-slate-500">Configure core metadata parameters stored dynamically in the SQLite system configuration table.</p>
+                  <p className="text-sm font-medium text-[#0a0a0a]">System Settings</p>
+                  <p className="text-xs text-neutral-400 mt-0.5">Core metadata stored in the SQLite system config table.</p>
                 </div>
 
                 {settingsLoading ? (
-                  <div className="flex flex-col items-center justify-center py-10">
-                    <Loader2 className="h-8 w-8 text-brand-600 animate-spin" />
-                    <p className="text-xs font-semibold text-slate-400 mt-2">Loading system configuration...</p>
-                  </div>
+                  <div className="flex flex-col items-center py-10"><Loader2 className="h-7 w-7 text-[#0a0a0a] animate-spin" /></div>
                 ) : settingsError ? (
-                  <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex items-start gap-3">
-                    <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
-                    <p className="text-sm text-red-700">{settingsError}</p>
-                  </div>
+                  <div className="p-4 bg-red-50 border border-red-100 rounded-xl flex gap-3"><AlertCircle className="h-4 w-4 text-red-500 shrink-0 mt-0.5" /><p className="text-sm text-red-600">{settingsError}</p></div>
                 ) : (
                   <>
-                    <form onSubmit={handleSaveSettings} className="space-y-6">
+                    <form onSubmit={handleSaveSettings} className="space-y-5">
                       {settingsSuccess && (
-                        <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-start gap-3 shadow-sm">
-                          <Check className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
-                          <p className="text-sm text-emerald-700 font-semibold">{settingsSuccess}</p>
+                        <div className="p-3 bg-green-50 border border-green-100 rounded-xl flex items-center gap-2">
+                          <Check className="h-4 w-4 text-green-600 shrink-0" /><p className="text-sm text-green-700">{settingsSuccess}</p>
                         </div>
                       )}
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-semibold text-slate-900">Application Name</label>
-                          <input
-                            type="text"
-                            value={systemSettings.app_name}
-                            onChange={(e) => setSystemSettings({ ...systemSettings, app_name: e.target.value })}
-                            className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none"
-                            required
-                          />
+                          <label className="block text-xs text-neutral-500 mb-1.5">Application name</label>
+                          <input type="text" value={systemSettings.app_name} onChange={(e) => setSystemSettings({ ...systemSettings, app_name: e.target.value })} className={fieldClass} required />
                         </div>
-
                         <div>
-                          <label className="block text-sm font-semibold text-slate-900">Support Email Address</label>
-                          <input
-                            type="email"
-                            value={systemSettings.support_email}
-                            onChange={(e) => setSystemSettings({ ...systemSettings, support_email: e.target.value })}
-                            className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none"
-                            required
-                          />
+                          <label className="block text-xs text-neutral-500 mb-1.5">Support email</label>
+                          <input type="email" value={systemSettings.support_email} onChange={(e) => setSystemSettings({ ...systemSettings, support_email: e.target.value })} className={fieldClass} required />
                         </div>
-
                         <div>
-                          <label className="block text-sm font-semibold text-slate-900 font-medium">System Maintenance Mode</label>
-                          <select
-                            value={systemSettings.maintenance_mode}
-                            onChange={(e) => setSystemSettings({ ...systemSettings, maintenance_mode: e.target.value })}
-                            className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none bg-white"
-                          >
-                            <option value="false">Disabled (Normal Operations)</option>
-                            <option value="true">Enabled (Admins Only Access)</option>
+                          <label className="block text-xs text-neutral-500 mb-1.5">Maintenance mode</label>
+                          <select value={systemSettings.maintenance_mode} onChange={(e) => setSystemSettings({ ...systemSettings, maintenance_mode: e.target.value })} className={selectClass}>
+                            <option value="false">Disabled</option>
+                            <option value="true">Enabled (admins only)</option>
                           </select>
                         </div>
                       </div>
-
-                      <div className="flex justify-end pt-4 border-t border-slate-100">
-                        <button
-                          type="submit"
-                          disabled={settingsSaving}
-                          className="px-5 py-2.5 bg-slate-900 text-white font-semibold text-sm rounded-xl hover:bg-slate-800 disabled:opacity-50 shadow-sm transition-colors flex items-center gap-2"
-                        >
-                          {settingsSaving && <Loader2 className="h-4 w-4 animate-spin" />}
-                          Save System Configurations
+                      <div className="flex justify-end pt-2 border-t border-black/8">
+                        <button type="submit" disabled={settingsSaving} className="px-5 py-2.5 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 disabled:opacity-50 transition-colors flex items-center gap-2">
+                          {settingsSaving && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Save
                         </button>
                       </div>
                     </form>
 
-                    {/* SMTP Email Test Section */}
-                    <div className="border-t border-slate-100 pt-6 mt-6">
-                      <div>
-                        <h4 className="text-sm font-bold text-slate-800">SMTP Email System Diagnostics</h4>
-                        <p className="text-xs text-slate-500">Test your SMTP settings by triggering a real-time system diagnostic test email to your admin address (<b>{currentUser?.email}</b>).</p>
-                      </div>
-                      
-                      <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <button
-                          type="button"
+                    <div className="border-t border-black/8 pt-6 space-y-3">
+                      <p className="text-sm font-medium">SMTP Diagnostics</p>
+                      <p className="text-xs text-neutral-400">Send a test email to <b>{currentUser?.email}</b> to verify your SMTP configuration.</p>
+                      <div className="flex items-center gap-4">
+                        <button type="button" disabled={settingsSaving}
                           onClick={async () => {
-                            setSettingsSaving(true);
-                            setSettingsError('');
-                            setSettingsSuccess('');
+                            setSettingsSaving(true); setSettingsError(''); setSettingsSuccess('');
                             try {
-                              const res = await fetch('/api/admin/test-email', {
-                                headers: { 'Accept': 'application/json' }
-                              });
+                              const res = await fetch('/api/admin/test-email', { headers: { 'Accept': 'application/json' } });
                               const data = await res.json();
-                              if (!res.ok) throw new Error(data.message || 'SMTP test email failed.');
+                              if (!res.ok) throw new Error(data.message || 'Test failed.');
                               setSettingsSuccess(data.message);
-                            } catch (err) {
-                              setSettingsError(err.message);
-                            } finally {
-                              setSettingsSaving(false);
-                            }
+                            } catch (err) { setSettingsError(err.message); }
+                            finally { setSettingsSaving(false); }
                           }}
-                          disabled={settingsSaving}
-                          className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl disabled:opacity-50 transition-colors flex items-center gap-2 shadow-sm"
+                          className="px-4 py-2 bg-[#0a0a0a] text-white text-xs font-medium rounded-full hover:bg-neutral-700 disabled:opacity-50 transition-colors flex items-center gap-2"
                         >
-                          <Mail className="h-4 w-4" />
-                          Trigger Test Email
+                          <Mail className="h-3.5 w-3.5" /> Send test email
                         </button>
-                        <span className="text-[11px] text-slate-400 font-medium">
-                          Note: If using Mailtrap or default simulated templates, look closely at your server's command-line output.
-                        </span>
+                        <span className="text-xs text-neutral-400">Check Railway logs if using simulation mode.</span>
                       </div>
                     </div>
                   </>
                 )}
               </div>
             )}
+
           </div>
         </main>
       </div>
 
-      {/* ADMIN EDIT USER MODAL */}
+      {/* Edit User Modal */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-150">
-            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-bold text-slate-800">Edit Registered User</h3>
-              <button onClick={handleEditClose} className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600">
-                <X className="h-5 w-5" />
-              </button>
+        <div className="fixed inset-0 bg-black/25 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#F2F1ED] rounded-[20px] max-w-md w-full overflow-hidden border border-black/8 shadow-xl">
+            <div className="p-5 border-b border-black/8 flex items-center justify-between">
+              <p className="text-sm font-medium">Edit user</p>
+              <button onClick={handleEditClose} className="p-1 rounded-lg hover:bg-black/5 text-neutral-400 hover:text-[#0a0a0a] transition-colors"><X className="h-4 w-4" /></button>
             </div>
-            
             <form onSubmit={handleEditSubmit} className="p-6 space-y-4">
-              {editError && (
-                <div className="p-3.5 bg-red-50 border border-red-100 rounded-xl text-xs text-red-700 font-medium">
-                  {editError}
-                </div>
-              )}
-
+              {editError && <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-xs text-red-600">{editError}</div>}
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase">User Name</label>
-                <input
-                  type="text"
-                  value={editForm.name}
-                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
-                  className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none"
-                  required
-                />
+                <label className="block text-xs text-neutral-500 mb-1.5">Name</label>
+                <input type="text" value={editForm.name} onChange={(e) => setEditForm({ ...editForm, name: e.target.value })} className={fieldClass} required />
               </div>
-
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase">Email Address</label>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-                  className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 placeholder:text-slate-400 focus:ring-2 focus:ring-inset focus:ring-brand-600 sm:text-sm px-3 focus:outline-none"
-                  required
-                />
+                <label className="block text-xs text-neutral-500 mb-1.5">Email</label>
+                <input type="email" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} className={fieldClass} required />
               </div>
-
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase">System Role</label>
-                  <select
-                    value={editForm.role}
-                    onChange={(e) => setEditForm({ ...editForm, role: e.target.value })}
-                    className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600 sm:text-sm px-3 focus:outline-none bg-white"
-                  >
-                    <option value="user">User</option>
-                    <option value="admin">Administrator</option>
+                  <label className="block text-xs text-neutral-500 mb-1.5">Role</label>
+                  <select value={editForm.role} onChange={(e) => setEditForm({ ...editForm, role: e.target.value })} className={selectClass}>
+                    <option value="user">User</option><option value="admin">Admin</option>
                   </select>
                 </div>
-
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 uppercase">Email Verified</label>
-                  <select
-                    value={editForm.is_verified}
-                    onChange={(e) => setEditForm({ ...editForm, is_verified: parseInt(e.target.value, 10) })}
-                    className="mt-2 block w-full rounded-xl border-0 py-2.5 text-slate-900 shadow-sm ring-1 ring-inset ring-slate-300 focus:ring-2 focus:ring-brand-600 sm:text-sm px-3 focus:outline-none bg-white"
-                  >
-                    <option value={1}>Verified</option>
-                    <option value={0}>Not Verified</option>
+                  <label className="block text-xs text-neutral-500 mb-1.5">Email verified</label>
+                  <select value={editForm.is_verified} onChange={(e) => setEditForm({ ...editForm, is_verified: parseInt(e.target.value, 10) })} className={selectClass}>
+                    <option value={1}>Verified</option><option value={0}>Unverified</option>
                   </select>
                 </div>
               </div>
-
-              <div className="flex items-center justify-end space-x-3 pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={handleEditClose}
-                  className="px-4 py-2.5 bg-slate-50 text-slate-700 font-semibold text-sm rounded-xl hover:bg-slate-100 border border-slate-200 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={editLoading}
-                  className="px-4 py-2.5 bg-brand-600 text-white font-semibold text-sm rounded-xl hover:bg-brand-700 disabled:opacity-50 transition-colors flex items-center gap-1.5"
-                >
-                  {editLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                  Save Changes
+              <div className="flex justify-end gap-3 pt-3 border-t border-black/8">
+                <button type="button" onClick={handleEditClose} className="px-4 py-2 text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">Cancel</button>
+                <button type="submit" disabled={editLoading} className="px-4 py-2 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 disabled:opacity-50 transition-colors flex items-center gap-2">
+                  {editLoading && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Save
                 </button>
               </div>
             </form>
