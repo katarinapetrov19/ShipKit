@@ -14,6 +14,7 @@ export default function Signup() {
   const [submitting, setSubmitting] = useState(false);
   const [localError, setLocalError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [verifyLink, setVerifyLink] = useState(null);
   const { signup, error, setError } = useAuth();
 
   useEffect(() => { setError(null); }, [setError]);
@@ -23,7 +24,10 @@ export default function Signup() {
     setLocalError(null);
     setSubmitting(true);
     try {
-      await signup(name, email, password);
+      const data = await signup(name, email, password);
+      if (data.verificationLink) {
+        setVerifyLink(data.verificationLink);
+      }
       setSuccess(true);
     } catch (err) {
       setLocalError(err.message);
@@ -41,6 +45,13 @@ export default function Signup() {
           <p className="text-sm text-neutral-500 leading-relaxed">
             We sent a verification link to <span className="text-[#0a0a0a] font-medium">{email}</span>. Click it to activate your account.
           </p>
+          {verifyLink && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-left space-y-2">
+              <p className="text-xs font-medium text-amber-800">⚠️ Dev mode — no real email sent</p>
+              <p className="text-xs text-amber-700">Click the link below to verify:</p>
+              <a href={verifyLink} className="text-xs text-blue-600 underline break-all font-medium hover:text-blue-700">{verifyLink}</a>
+            </div>
+          )}
           <Link to="/login" className="inline-block mt-2 px-6 py-3 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
             Go to sign in
           </Link>

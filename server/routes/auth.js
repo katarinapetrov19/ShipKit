@@ -52,7 +52,7 @@ router.post('/signup', async (req, res, next) => {
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
     const verificationLink = `${clientUrl}/verify-email?token=${verificationToken}`;
     
-    await sendEmail({
+    const emailResult = await sendEmail({
       to: email,
       subject: 'Verify Your Email - ShipKit ⚡',
       text: `Welcome to ShipKit! Please verify your email by clicking the following link: ${verificationLink}`,
@@ -71,7 +71,8 @@ router.post('/signup', async (req, res, next) => {
 
     return res.status(201).json({
       status: 'success',
-      message: 'Registration successful! Please check your email to verify your account.'
+      message: 'Registration successful! Please check your email to verify your account.',
+      verificationLink: emailResult?.simulated ? verificationLink : undefined
     });
   } catch (error) {
     next(error);
