@@ -65,9 +65,9 @@ export default function Landing() {
             <Link to="/login" className="px-5 py-2 text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
               Sign in
             </Link>
-            <Link to="/signup" className="px-5 py-2 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
-              Get started
-            </Link>
+            <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="px-5 py-2 bg-[#0a0a0a] text-white text-sm font-medium rounded-full hover:bg-neutral-700 transition-colors">
+              Buy now
+            </a>
           </div>
         </div>
       </header>
@@ -141,9 +141,11 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/login" className="mt-8 block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
-                Try local demo
-              </Link>
+              <div className="mt-8 flex flex-col gap-2">
+                <Link to="/login" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
+                  Try demo
+                </Link>
+              </div>
             </div>
 
             {/* Monthly — featured */}
@@ -164,9 +166,14 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/signup?plan=monthly" className="mt-8 block w-full py-3 text-center text-sm font-medium rounded-full bg-white text-[#0a0a0a] hover:bg-neutral-100 transition-colors">
-                Get started
-              </Link>
+              <div className="mt-8 flex flex-col gap-2">
+                <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="block w-full py-3 text-center text-sm font-medium rounded-full bg-white text-[#0a0a0a] hover:bg-neutral-100 transition-colors">
+                  Buy now
+                </a>
+                <Link to="/login" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-colors">
+                  Try demo first
+                </Link>
+              </div>
             </div>
 
             {/* Yearly */}
@@ -184,9 +191,14 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Link to="/signup?plan=yearly" className="mt-8 block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
-                Get yearly plan
-              </Link>
+              <div className="mt-8 flex flex-col gap-2">
+                <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
+                  Buy now
+                </a>
+                <Link to="/login" className="block w-full py-3 text-center text-sm font-medium text-neutral-400 hover:text-black transition-colors text-center">
+                  Try demo first
+                </Link>
+              </div>
             </div>
 
           </div>
