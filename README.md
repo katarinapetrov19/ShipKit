@@ -264,8 +264,8 @@ Ready to launch? Get instant access to the full source code:
 | **Single License** | **$69** | One project. Full source, docs, and updates. |
 | **Extended License** | **$169** | Unlimited projects. Commercial use, priority support. |
 
-👉 [**Buy Single License — $69**](https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00)
-👉 [**Buy Extended License — $169**](https://buy.stripe.com/6oU4gB4X5elU13d60i33W01)
+👉 [**Buy Single License — $69**](https://buy.stripe.com/9B6eVe6rn7MI13c5I93F601)
+👉 [**Buy Extended License — $169**](https://buy.stripe.com/aFaaEYbLH4AwdPYb2t3F600)
 
 ---
 
