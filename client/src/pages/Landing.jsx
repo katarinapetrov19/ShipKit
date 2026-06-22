@@ -167,8 +167,8 @@ export default function Landing() {
                 ))}
               </ul>
               <div className="mt-8 flex flex-col gap-2">
-                <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="hidden sm:block w-full py-3 text-center text-sm font-medium rounded-full bg-white text-[#0a0a0a] hover:bg-neutral-100 transition-colors">
-                  Buy now
+                <a href="https://buy.stripe.com/9B6eVe6rn7MI13c5I93F601" target="_blank" rel="noopener" className="hidden sm:block w-full py-3 text-center text-sm font-medium rounded-full bg-white text-[#0a0a0a] hover:bg-neutral-100 transition-colors">
+                  Buy now — $69
                 </a>
                 <Link to="/login" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 transition-colors">
                   Try demo first
@@ -192,8 +192,8 @@ export default function Landing() {
                 ))}
               </ul>
               <div className="mt-8 flex flex-col gap-2">
-                <a href="https://buy.stripe.com/bJeaEZ89h6TscLVfAS33W00" target="_blank" rel="noopener" className="hidden sm:block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
-                  Buy now
+                <a href="https://buy.stripe.com/aFaaEYbLH4AwdPYb2t3F600" target="_blank" rel="noopener" className="hidden sm:block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
+                  Buy now — $169
                 </a>
                 <Link to="/login" className="block w-full py-3 text-center text-sm font-medium rounded-full border border-black/15 hover:bg-white transition-colors">
                   Try demo first
